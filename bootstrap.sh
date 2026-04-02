@@ -53,6 +53,37 @@ echo "Installing Brew packages..."
 brew bundle --file="${REPO_ROOT}/Brewfile"
 
 # ------------------------------
+# Oh My Zsh (not in Homebrew — official installer + theme/plugins for .zshrc)
+# ------------------------------
+OMZ_DIR="${HOME}/.oh-my-zsh"
+if [[ ! -f "${OMZ_DIR}/oh-my-zsh.sh" ]]; then
+  echo "Installing Oh My Zsh (official script; Homebrew does not ship it)..."
+  RUNZSH=no CHSH=no KEEP_ZSHRC=yes \
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
+
+ZSH_CUSTOM="${OMZ_DIR}/custom"
+mkdir -p "${ZSH_CUSTOM}/themes" "${ZSH_CUSTOM}/plugins"
+
+P10K_THEME="${ZSH_CUSTOM}/themes/powerlevel10k"
+if [[ ! -d "${P10K_THEME}/.git" ]] && [[ ! -f "${P10K_THEME}/powerlevel10k.zsh-theme" ]]; then
+  echo "Installing Powerlevel10k theme..."
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${P10K_THEME}"
+fi
+
+ZAS="${ZSH_CUSTOM}/plugins/zsh-autosuggestions"
+if [[ ! -d "${ZAS}/.git" ]]; then
+  echo "Installing zsh-autosuggestions..."
+  git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions "${ZAS}"
+fi
+
+ZSH_SYNTAX="${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting"
+if [[ ! -d "${ZSH_SYNTAX}/.git" ]]; then
+  echo "Installing zsh-syntax-highlighting..."
+  git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_SYNTAX}"
+fi
+
+# ------------------------------
 # Dotfiles setup
 # ------------------------------
 echo "Linking dotfiles..."
@@ -60,6 +91,7 @@ echo "Linking dotfiles..."
 mkdir -p "${HOME}/.ssh"
 
 ln -sf "${REPO_ROOT}/dotfiles/.zshrc" "${HOME}/.zshrc"
+ln -sf "${REPO_ROOT}/dotfiles/.gitconfig" "${HOME}/.gitconfig"
 ln -sf "${REPO_ROOT}/dotfiles/.ssh/config" "${HOME}/.ssh/config"
 
 chmod 600 "${HOME}/.ssh/config"
