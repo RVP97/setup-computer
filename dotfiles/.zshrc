@@ -6,12 +6,16 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # ------------------------------
+# Skip heavy config for non-interactive shells (Cursor optimization)
+# ------------------------------
+[[ $- != *i* ]] && return
+
+# ------------------------------
 # Oh My Zsh + Theme
 # ------------------------------
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
-# Minimal, high-value plugins
 plugins=(
   git
   brew
@@ -40,7 +44,8 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # Aliases
 # ------------------------------
 alias zshconfig="cursor ~/.zshrc"
-alias src="source ~/.zshrc"
+alias editz="cursor ~/.zshrc"
+alias reload="source ~/.zshrc"
 alias gs="git status"
 alias gp="git push"
 alias gc="git commit"
