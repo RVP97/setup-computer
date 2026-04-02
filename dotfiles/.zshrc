@@ -26,7 +26,7 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # ------------------------------
-# PATH (order matters)
+# PATH (order matters) — Apple Silicon Homebrew: /opt/homebrew
 # ------------------------------
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"

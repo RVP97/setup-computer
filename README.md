@@ -2,11 +2,12 @@
 
 Personal macOS bootstrap: [Homebrew](https://brew.sh/) packages, symlinked dotfiles, and optional system defaults. Safe to re-run; paths are resolved from the script’s location, so the repo can live anywhere on disk.
 
+**Target hardware:** Apple Silicon Macs (M1 / M2 / M3 / M4 / M5 and later). Homebrew and `dotfiles/.zshrc` assume the standard prefix [`/opt/homebrew`](https://docs.brew.sh/Installation). Intel Macs are not supported here.
+
 ## Requirements
 
-- macOS
+- macOS on **Apple Silicon**
 - Network access for Homebrew and `brew bundle`
-- Apple Silicon or Intel (Homebrew is detected under `/opt/homebrew` or `/usr/local`)
 
 ## Quick start
 

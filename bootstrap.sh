@@ -8,20 +8,17 @@ echo "Starting machine setup..."
 echo "→ Repo: $REPO_ROOT"
 
 # ------------------------------
-# Homebrew: PATH before/after install (Apple Silicon + Intel)
+# Homebrew: Apple Silicon only (/opt/homebrew)
 # ------------------------------
 load_brew_shellenv() {
   if command -v brew >/dev/null 2>&1; then
     eval "$(brew shellenv)"
     return 0
   fi
-  local prefix
-  for prefix in /opt/homebrew /usr/local; do
-    if [[ -x "${prefix}/bin/brew" ]]; then
-      eval "$("${prefix}/bin/brew" shellenv)"
-      return 0
-    fi
-  done
+  if [[ -x /opt/homebrew/bin/brew ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+    return 0
+  fi
   return 1
 }
 
