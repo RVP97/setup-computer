@@ -7,19 +7,15 @@ brew "wget"
 # Runtime
 brew "node"
 brew "bun"
-brew "pnpm"
 
 # Databases
 brew "postgresql@17"
 brew "redis"
 
 # Dev tools
-brew "fzf"
-brew "ripgrep"
 brew "jq"
-brew "htop"
-brew "tmux"
-brew "neovim"
+
+
 
 # Docker
 cask "docker"
@@ -40,3 +36,8 @@ cask "microsoft-excel"
 cask "microsoft-word"
 cask "microsoft-powerpoint"
 cask "numi"
+cask "beekeeper-studio"
+cask "telegram"
+cask "whatsapp"
+cask "tailscale-app"
+cask "domzilla-caffeine"
