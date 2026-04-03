@@ -2,6 +2,8 @@
 
 Personal macOS bootstrap: [Homebrew](https://brew.sh/) packages, symlinked dotfiles, and optional system defaults. Safe to re-run; paths are resolved from the script’s location, so the repo can live anywhere on disk.
 
+**GitHub:** [`RVP97/setup-computer`](https://github.com/RVP97/setup-computer) — URLs and defaults in [`install.sh`](install.sh) use this `owner/repo` unless you override `SETUP_COMPUTER_GITHUB`.
+
 **Target hardware:** Apple Silicon Macs (M1 / M2 / M3 / M4 / M5 and later). Homebrew and `dotfiles/.zshrc` assume the standard prefix [`/opt/homebrew`](https://docs.brew.sh/Installation). Intel Macs are not supported here.
 
 ## Requirements
@@ -11,14 +13,60 @@ Personal macOS bootstrap: [Homebrew](https://brew.sh/) packages, symlinked dotfi
 
 ## Quick start
 
+This repo is **public** — no GitHub token needed for the paths below (unless you use a **private fork**).
+
+### Recommended: `git clone` + [`bootstrap.sh`](bootstrap.sh)
+
+This is the path most dotfiles-style repos use: you get a real `.git` directory, can **`git pull`** to update scripts, and you run **`bootstrap.sh`** from a checkout you can read first.
+
 ```bash
-git clone <your-repo-url> ~/path/you/prefer/setup-computer
-cd ~/path/you/prefer/setup-computer
-chmod +x bootstrap.sh macos.sh   # macos.sh must be executable to run from bootstrap
+git clone https://github.com/RVP97/setup-computer.git ~/setup-computer
+cd ~/setup-computer
+chmod +x bootstrap.sh macos.sh
 ./bootstrap.sh
 ```
 
-Then restart the terminal or run `source ~/.zshrc`.
+SSH (if your GitHub account uses it): `git clone git@github.com:RVP97/setup-computer.git ~/setup-computer`
+
+### Quick alternative: one-liner ([`install.sh`](install.sh))
+
+Same end state with fewer commands; handy on a brand-new Mac:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/RVP97/setup-computer/main/install.sh | bash
+```
+
+Caveat: if `git` is missing and the script falls back to a **tarball**, that tree has **no `.git`** — run `git clone` into `~/setup-computer` later if you want normal pulls. Treat `curl | bash` like any remote script (you trust `main` on this repo).
+
+### Private fork or blocked `raw.githubusercontent.com`
+
+Use a [PAT](https://github.com/settings/tokens) (**never commit it**):
+
+```bash
+export GITHUB_TOKEN=ghp_your_token_here
+curl -fsSL \
+  -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+  -H "Accept: application/vnd.github.raw" \
+  "https://api.github.com/repos/RVP97/setup-computer/contents/install.sh?ref=main" | bash
+```
+
+Or copy `install.sh` to the machine and run `GITHUB_TOKEN=… bash install.sh`.
+
+### Environment variables (`install.sh`)
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `GITHUB_TOKEN` | (unset) | Only for **private** repos or authenticated API fetch |
+| `SETUP_COMPUTER_DIR` | `$HOME/setup-computer` | Where the repo is placed |
+| `SETUP_COMPUTER_BRANCH` | `main` | Branch to clone / archive |
+| `SETUP_COMPUTER_GITHUB` | `RVP97/setup-computer` | `owner/repo` for GitHub URLs |
+| `SETUP_COMPUTER_CLONE_URL` | (derived) | Override clone URL (e.g. SSH or fork) |
+
+**Security:** Treat `curl … | bash` like running any remote script; this one is yours on `main`. PATs can appear briefly in process listings—revoke one-off tokens after use.
+
+### After bootstrap
+
+Restart the terminal or run `source ~/.zshrc`.
 
 If Homebrew was **just** installed and the script exits asking for a new terminal, open a fresh window and run `./bootstrap.sh` again.
 
@@ -51,6 +99,7 @@ Some changes may require logging out and back in.
 
 | Path | Role |
 |------|------|
+| `install.sh` | Remote one-liner: fetch repo + run `bootstrap.sh` |
 | `bootstrap.sh` | One-shot machine setup |
 | `Brewfile` | `brew bundle` formula and cask list |
 | `macos.sh` | macOS `defaults` |
