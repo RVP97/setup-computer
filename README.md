@@ -66,9 +66,11 @@ Or copy `install.sh` to the machine and run `GITHUB_TOKEN=… bash install.sh`.
 
 ### After bootstrap
 
-Restart the terminal or run `source ~/.zshrc`.
+On an **interactive** terminal, [`bootstrap.sh`](bootstrap.sh) finishes by running **`exec zsh -l`**, so a **login zsh** starts with your new `PATH` and `~/.zshrc` without opening another window. Type **`exit`** if you want the shell you launched bootstrap from.
 
-If Homebrew was **just** installed and the script exits asking for a new terminal, open a fresh window and run `./bootstrap.sh` again.
+Set **`SETUP_COMPUTER_SKIP_ZSH_REEXEC=1`** (e.g. in CI) to skip that and only print the reminder.
+
+If Homebrew was **just** installed and the script exits asking for a **new terminal** before Homebrew is on `PATH`, open a new window and run `./bootstrap.sh` again — that case happens before the final `exec zsh -l`.
 
 ## What `bootstrap.sh` does
 
@@ -78,6 +80,7 @@ If Homebrew was **just** installed and the script exits asking for a new termina
 4. Installs [Oh My Zsh](https://ohmyz.sh/) with the upstream installer if `~/.oh-my-zsh` is missing (Homebrew does not provide a supported formula). Uses `KEEP_ZSHRC=yes` so your symlinked `~/.zshrc` is preserved. Also clones Powerlevel10k, zsh-autosuggestions, and zsh-syntax-highlighting into `~/.oh-my-zsh/custom/` when needed so the bundled `.zshrc` works on a new machine.
 5. Symlinks `dotfiles/.zshrc` → `~/.zshrc`, `dotfiles/.gitconfig` → `~/.gitconfig`, and `dotfiles/.ssh/config` → `~/.ssh/config`, creates `~/.ssh` if needed, and sets `600` on the SSH config.
 6. Runs `macos.sh` when it exists **and** is executable (`chmod +x macos.sh`).
+7. In an interactive terminal, runs **`exec zsh -l`** so a login zsh loads with the updated `PATH` and `~/.zshrc` (skippable with `SETUP_COMPUTER_SKIP_ZSH_REEXEC=1`).
 
 ## `macos.sh`
 

@@ -105,4 +105,12 @@ fi
 # Done
 # ------------------------------
 echo "Setup complete."
-echo "→ Restart terminal OR run: source ~/.zshrc"
+
+# Interactive terminal: replace this shell with login zsh so ~/.zprofile + ~/.zshrc load (PATH, Oh My Zsh, etc.)
+# Skip with SETUP_COMPUTER_SKIP_ZSH_REEXEC=1 (e.g. CI) or when stdout is not a TTY.
+if [[ -t 1 ]] && [[ -z "${SETUP_COMPUTER_SKIP_ZSH_REEXEC:-}" ]] && command -v zsh >/dev/null 2>&1; then
+  echo "→ Starting login zsh with your updated configuration (type exit to return to the previous shell)."
+  exec zsh -l
+fi
+
+echo "→ Open a new terminal or run: zsh -l"
