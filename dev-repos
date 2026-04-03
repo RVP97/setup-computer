@@ -1,0 +1,14 @@
+# One repo per line. Uses SSH. Bootstrap pauses first so you can unlock 1Password (SSH agent).
+# Skip that pause: SETUP_COMPUTER_SKIP_DEV_PAUSE=1 ./bootstrap.sh
+#
+# Optional path first (one or more segments: webdev, webdev/paginas, …)
+#
+#   owner/repo                         → ~/dev/repo
+#   owner/repo  my-name                → ~/dev/my-name
+#   webdev  owner/repo                 → ~/dev/webdev/repo
+#   webdev/paginas  owner/repo         → ~/dev/webdev/paginas/repo
+#   webdev/paginas  owner/repo  myapp  → ~/dev/webdev/paginas/myapp
+#   mobile  owner/repo                 → ~/dev/mobile/repo
+#
+webdev  RVP97/ReputRadar  reputradar
+webdev  RVP97/santi-palacio

@@ -79,8 +79,9 @@ If Homebrew was **just** installed and the script exits asking for a **new termi
 3. Runs `brew update` and `brew bundle` using this repo’s `Brewfile`.
 4. Installs [Oh My Zsh](https://ohmyz.sh/) with the upstream installer if `~/.oh-my-zsh` is missing (Homebrew does not provide a supported formula). Uses `KEEP_ZSHRC=yes` so your symlinked `~/.zshrc` is preserved. Also clones Powerlevel10k, zsh-autosuggestions, and zsh-syntax-highlighting into `~/.oh-my-zsh/custom/` when needed so the bundled `.zshrc` works on a new machine.
 5. Symlinks `dotfiles/.zshrc` → `~/.zshrc`, `dotfiles/.gitconfig` → `~/.gitconfig`, and `dotfiles/.ssh/config` → `~/.ssh/config`, creates `~/.ssh` if needed, and sets `600` on the SSH config.
-6. Runs `macos.sh` when it exists **and** is executable (`chmod +x macos.sh`).
-7. In an interactive terminal, runs **`exec zsh -l`** so a login zsh loads with the updated `PATH` and `~/.zshrc` (skippable with `SETUP_COMPUTER_SKIP_ZSH_REEXEC=1`).
+6. If [`dev-repos`](dev-repos) has entries, prompts you to **unlock 1Password** (for SSH), then clones or updates repos under **`~/dev`** (see file for path layout).
+7. Runs `macos.sh` when it exists **and** is executable (`chmod +x macos.sh`).
+8. In an interactive terminal, runs **`exec zsh -l`** so a login zsh loads with the updated `PATH` and `~/.zshrc` (skippable with `SETUP_COMPUTER_SKIP_ZSH_REEXEC=1`).
 
 ## `macos.sh`
 
@@ -97,6 +98,7 @@ Some changes may require logging out and back in.
 - **Packages and apps:** edit `Brewfile`, then run `brew bundle` (or re-run `./bootstrap.sh`).
 - **Shell, Git, and SSH client config:** edit files under `dotfiles/`; symlinks pick up changes immediately. For Git identity, see `dotfiles/.gitconfig` (or override locally with `git config --global` if you do not want it in the repo).
 - **SSH keys:** this repo only manages `~/.ssh/config`. Generate or copy keys separately; do not commit private keys.
+- **Dev projects:** edit [`dev-repos`](dev-repos) — **`owner/repo`** per line (SSH). If the file has entries, **`bootstrap.sh` pauses** before cloning so you can **unlock 1Password** (your [`dotfiles/.ssh/config`](dotfiles/.ssh/config) uses the 1Password agent). Set **`SETUP_COMPUTER_SKIP_DEV_PAUSE=1`** to skip the pause. Optional **path first** (`webdev`, `webdev/paginas`, …) under **`~/dev`**. Env: **`SETUP_COMPUTER_DEV_ROOT`**, **`SETUP_COMPUTER_GITHUB_HOST`** (Enterprise).
 
 ## Repository layout
 
@@ -106,4 +108,5 @@ Some changes may require logging out and back in.
 | `bootstrap.sh` | One-shot machine setup |
 | `Brewfile` | `brew bundle` formula and cask list |
 | `macos.sh` | macOS `defaults` |
+| `dev-repos` | Optional: one `owner/repo` per line → cloned into `~/dev` |
 | `dotfiles/` | Source files symlinked into `$HOME` |
