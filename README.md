@@ -26,6 +26,12 @@ chmod +x bootstrap.sh macos.sh
 ./bootstrap.sh
 ```
 
+If `git clone` on macOS prompts for Xcode/Developer Tools, install **Command Line Tools** first, then retry:
+
+```bash
+xcode-select --install
+```
+
 SSH (if your GitHub account uses it): `git clone git@github.com:RVP97/setup-computer.git ~/setup-computer`
 
 ### Quick alternative: one-liner ([`install.sh`](install.sh))
