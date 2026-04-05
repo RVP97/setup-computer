@@ -14,6 +14,7 @@ brew "redis"
 
 # Dev tools
 brew "jq"
+brew "cloc"
 
 
 
