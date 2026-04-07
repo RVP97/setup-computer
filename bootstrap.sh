@@ -202,6 +202,31 @@ if [[ -f "${DEV_LIST}" ]]; then
 fi
 
 # ------------------------------
+# macOS Automator workflows (Quick Actions / Services)
+# ------------------------------
+MAC_AUTOMATOR_REPO="git@${GITHUB_SSH_HOST}:RVP97/mac-automator.git"
+MAC_AUTOMATOR_DIR="${DEV_ROOT}/mac-automator"
+SERVICES_DIR="${HOME}/Library/Services"
+
+if [[ -d "${MAC_AUTOMATOR_DIR}/.git" ]]; then
+  echo "Updating mac-automator..."
+  git -C "${MAC_AUTOMATOR_DIR}" pull --ff-only 2>/dev/null || true
+else
+  echo "Cloning mac-automator..."
+  mkdir -p "${DEV_ROOT}"
+  git clone --depth 1 "${MAC_AUTOMATOR_REPO}" "${MAC_AUTOMATOR_DIR}"
+fi
+
+mkdir -p "${SERVICES_DIR}"
+for wf in "${MAC_AUTOMATOR_DIR}"/*.workflow; do
+  [[ -d "${wf}" ]] || continue
+  wf_name="$(basename "${wf}")"
+  echo "  • Installing ${wf_name}"
+  rm -rf "${SERVICES_DIR}/${wf_name}"
+  cp -R "${wf}" "${SERVICES_DIR}/${wf_name}"
+done
+
+# ------------------------------
 # macOS defaults (optional script in repo)
 # ------------------------------
 if [[ -x "${REPO_ROOT}/macos.sh" ]]; then
