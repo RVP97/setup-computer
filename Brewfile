@@ -6,7 +6,6 @@ brew "wget"
 
 # Runtime
 brew "node"
-brew "bun"
 
 # Databases
 brew "postgresql@17"
@@ -23,7 +22,9 @@ cask "docker"
 
 # Apps
 cask "google-chrome"
+cask "swish"
 cask "cursor"
+cask "cleanshot"
 cask "raycast"
 cask "warp"
 cask "glance-chamburr"
