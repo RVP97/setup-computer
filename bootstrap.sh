@@ -50,6 +50,27 @@ echo "Installing Brew packages..."
 brew bundle --file="${REPO_ROOT}/Brewfile"
 
 # ------------------------------
+# Bun (JavaScript runtime & package manager)
+# ------------------------------
+if ! command -v bun >/dev/null 2>&1; then
+  echo "Installing Bun..."
+  curl -fsSL https://bun.com/install | bash
+fi
+
+export BUN_INSTALL="${HOME}/.bun"
+if [[ -s "${BUN_INSTALL}/_bun" ]]; then
+  # shellcheck source=/dev/null
+  source "${BUN_INSTALL}/_bun"
+elif [[ -x "${BUN_INSTALL}/bin/bun" ]]; then
+  export PATH="${BUN_INSTALL}/bin:${PATH}"
+fi
+
+if command -v bun >/dev/null 2>&1 && [[ -f "${REPO_ROOT}/package.json" ]]; then
+  echo "Installing JS dependencies (bun install)..."
+  (cd "${REPO_ROOT}" && bun install)
+fi
+
+# ------------------------------
 # Oh My Zsh (not in Homebrew — official installer + theme/plugins for .zshrc)
 # ------------------------------
 OMZ_DIR="${HOME}/.oh-my-zsh"
