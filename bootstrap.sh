@@ -205,15 +205,25 @@ fi
 # macOS Automator workflows (Quick Actions / Services)
 # ------------------------------
 MAC_AUTOMATOR_REPO="git@${GITHUB_SSH_HOST}:RVP97/mac-automator.git"
-MAC_AUTOMATOR_DIR="${DEV_ROOT}/mac-automator"
+MAC_AUTOMATOR_DIR_PRIMARY="${DEV_ROOT}/automation/mac-automator"
+MAC_AUTOMATOR_DIR_LEGACY="${DEV_ROOT}/mac-automator"
 SERVICES_DIR="${HOME}/Library/Services"
+MAC_AUTOMATOR_DIR=""
+
+if [[ -d "${MAC_AUTOMATOR_DIR_PRIMARY}/.git" ]]; then
+  MAC_AUTOMATOR_DIR="${MAC_AUTOMATOR_DIR_PRIMARY}"
+elif [[ -d "${MAC_AUTOMATOR_DIR_LEGACY}/.git" ]]; then
+  MAC_AUTOMATOR_DIR="${MAC_AUTOMATOR_DIR_LEGACY}"
+else
+  MAC_AUTOMATOR_DIR="${MAC_AUTOMATOR_DIR_PRIMARY}"
+fi
 
 if [[ -d "${MAC_AUTOMATOR_DIR}/.git" ]]; then
   echo "Updating mac-automator..."
   git -C "${MAC_AUTOMATOR_DIR}" pull --ff-only 2>/dev/null || true
 else
   echo "Cloning mac-automator..."
-  mkdir -p "${DEV_ROOT}"
+  mkdir -p "$(dirname "${MAC_AUTOMATOR_DIR}")"
   git clone --depth 1 "${MAC_AUTOMATOR_REPO}" "${MAC_AUTOMATOR_DIR}"
 fi
 

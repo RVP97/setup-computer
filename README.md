@@ -106,6 +106,26 @@ Some changes may require logging out and back in.
 - **SSH keys:** this repo only manages `~/.ssh/config`. Generate or copy keys separately; do not commit private keys.
 - **Dev projects:** edit [`dev-repos`](dev-repos) — **`owner/repo`** per line (SSH). If the file has entries, **`bootstrap.sh` pauses** before cloning so you can **unlock 1Password** (your [`dotfiles/.ssh/config`](dotfiles/.ssh/config) uses the 1Password agent). Set **`SETUP_COMPUTER_SKIP_DEV_PAUSE=1`** to skip the pause. Optional **path first** (`webdev`, `webdev/paginas`, …) under **`~/dev`**. Env: **`SETUP_COMPUTER_DEV_ROOT`**, **`SETUP_COMPUTER_GITHUB_HOST`** (Enterprise).
 
+### Clone dev repos separately
+
+If you only want to clone/update projects from [`dev-repos`](dev-repos) (without running full bootstrap):
+
+```bash
+./clone-dev-repos.sh
+```
+
+You can also pass a different list file:
+
+```bash
+./clone-dev-repos.sh /path/to/dev-repos
+```
+
+After `git clone` succeeds for your repos, copy macOS Quick Actions from `mac-automator`:
+
+```bash
+mkdir -p ~/Library/Services && cp -R "/Users/rodrigo/dev/automation/mac-automator/"*.workflow ~/Library/Services/
+```
+
 ## Repository layout
 
 | Path | Role |
@@ -115,4 +135,5 @@ Some changes may require logging out and back in.
 | `Brewfile` | `brew bundle` formula and cask list |
 | `macos.sh` | macOS `defaults` |
 | `dev-repos` | Optional: one `owner/repo` per line → cloned into `~/dev` |
+| `clone-dev-repos.sh` | Standalone clone/update for entries in `dev-repos` |
 | `dotfiles/` | Source files symlinked into `$HOME` |
