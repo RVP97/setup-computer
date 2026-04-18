@@ -15,7 +15,8 @@ brew "redis"
 brew "jq"
 brew "cloc"
 
-
+# Media
+brew "ffmpeg"
 
 # Docker
 cask "docker"
